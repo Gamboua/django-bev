@@ -111,7 +111,7 @@ T = Template = View
 
 Vamos criar uma view do tipo mais simples possível:
 
-polls/views.py
+[polls/views.py](mysite/mysite/polls/views.py)
 
 ```python
 from django.http import HttpResponse
@@ -123,7 +123,7 @@ def index(request):
 
 Para organizar nossas urls, crie um arquivo polls/urls.py
 
-polls/urls.py
+[polls/urls.py](mysite/mysite/polls/urls.py)
 
 ```python
 from django.urls import path
@@ -137,7 +137,7 @@ urlpatterns = [
 
 Agora vamos chamar nossas urls do polls no urls da raiz:
 
-mysite/urls.py
+[mysite/urls.py](mysite/mysite/urls.py)
 
 ```python
 from django.contrib import admin
