@@ -72,8 +72,8 @@ python manage.py runserver
 A aplicação no Djando é um pacote python com alguma funcionalidade que segue uma estrutura pré definida.
 
 ```bash
-mkdir mysite/mysite/pools
-django-admin startapp mysite/mysite/pools
+mkdir mysite/mysite/polls
+django-admin startapp mysite/mysite/polls
 ```
 
 Devemos ter a seguinte estrutura de diretórios:
@@ -111,7 +111,7 @@ T = Template = View
 
 Vamos criar uma view do tipo mais simples possível:
 
-pools/views.py
+polls/views.py
 
 ```python
 from django.http import HttpResponse
@@ -121,7 +121,7 @@ def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 ```
 
-Para organizar nossas urls, crie um arquivo pools/urls.py
+Para organizar nossas urls, crie um arquivo polls/urls.py
 
 polls/urls.py
 
@@ -135,7 +135,7 @@ urlpatterns = [
 ]
 ```
 
-Agora vamos chamar nossas urls do pools no urls da raiz:
+Agora vamos chamar nossas urls do polls no urls da raiz:
 
 mysite/urls.py
 
@@ -144,7 +144,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('polls/', include('polls.urls')),
+    path('polls/', include('mysite.polls.urls')),
     path('admin/', admin.site.urls),
 ]
 ```
