@@ -49,7 +49,7 @@ Um projeto é uma coleção de aplicações e configurações para determinado w
 django-admin startproject mysite
 ```
 
-Devemos ter a seguinte estrutura de diretorios
+Devemos ter a seguinte estrutura de diretórios
 
 ```bash
 mysite/
@@ -111,7 +111,7 @@ T = Template = View
 
 Vamos criar uma view do tipo mais simples possível:
 
-[polls/views.py](mysite/mysite/polls/views.py)
+[polls/views.py](polls/views.py)
 
 ```python
 from django.http import HttpResponse
@@ -123,7 +123,7 @@ def index(request):
 
 Para organizar nossas urls, crie um arquivo polls/urls.py
 
-[polls/urls.py](mysite/mysite/polls/urls.py)
+[polls/urls.py](polls/urls.py)
 
 ```python
 from django.urls import path
@@ -144,7 +144,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('polls/', include('mysite.polls.urls')),
+    path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
 ]
 ```
@@ -153,4 +153,70 @@ Rodamos o comando para subir um servidor e acessamos a URL:
 
 ```bash
 python manage.py runserver
+```
+# Criando a Model
+
+O Django possui um poderoso ORM que podemos utilizar através das models:
+
+[polls/models.py](polls/models.py)
+
+```python
+from django.db import models
+
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+```
+
+Precisamos agora ativar as Models do app configurando ele dentro do settings do projeto:
+
+[myapp/settings.py](myapp/settings.py)
+```python
+INSTALLED_APPS = [
+    'polls.apps.PollsConfig',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+```
+
+O Django consegue detectar mudanças nas models e, automaticamente, gerar as migrations:
+```bash
+python manage.py makemigrations
+```
+
+Depois precisamos aplicar as migrações que foram geradas:
+```bash
+python manage.py migrate
+```
+
+# Django Admin
+Primeira coisa que precisamos fazer é criar um usuário para acessar o painel:
+```bash
+python manage.py createsuperuser
+```
+Vamos rodar o server novamente:
+```bash
+python manage.py runserver
+```
+Depois, podemos acessar a página de admin [localhost:8000/admin/](http://localhost:8000/admin/) e fazer o login:
+
+Inicialmente, temos as informações de usuários e grupos padrão do Django, mas podemos adicionar nossas próprias models:
+[polls/admin.py](polls/admin.py)
+```python
+from django.contrib import admin
+
+from .models import Question
+
+admin.site.register(Question)
 ```
